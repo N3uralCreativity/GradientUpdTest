@@ -7,21 +7,21 @@ const downloadBtn = document.getElementById("downloadBtn");
 
 const JSONBIN_BASE_URL = "https://api.jsonbin.io/v3/b/";
 
-window.structuredData = null; // Va contenir l'objet { colorSequence, propsColors, firstColor, lastColor... }
+window.structuredData = null; // Will hold the object { colorSequence, propsColors, firstColor, lastColor... }
 
 /**************************************************
- * 1) Quand on clique sur “Récupérer”
+ * 1) When you click “Retrieve”
  **************************************************/
 retrieveBtn.addEventListener("click", async () => {
   visualContainer.innerHTML = "";
-  infoMessage.textContent = "Chargement...";
+  infoMessage.textContent = "Loading...";
   resultSection.classList.remove("hidden");
   downloadBtn.classList.add("hidden");
   window.structuredData = null;
 
   const binId = binIdInput.value.trim();
   if(!binId) {
-    infoMessage.textContent = "Veuillez saisir un Bin ID.";
+    infoMessage.textContent = "Please enter a Gradient ID.";
     return;
   }
 
@@ -29,63 +29,63 @@ retrieveBtn.addEventListener("click", async () => {
     const url = `${JSONBIN_BASE_URL}${encodeURIComponent(binId)}`;
     const resp = await fetch(url);
     if(!resp.ok) {
-      infoMessage.textContent = `Erreur: bin introuvable ou serveur HS. (status ${resp.status})`;
+      infoMessage.textContent = `Error: ID not found or server down. (status ${resp.status})`;
       return;
     }
     const fullJson = await resp.json(); // { record: {...}, metadata: {...} }
 
-    infoMessage.textContent = "Bin récupéré avec succès.";
+    infoMessage.textContent = "Gradient successfully retrieved.";
     downloadBtn.classList.remove("hidden");
 
     if(!fullJson.record) {
       visualContainer.innerHTML = "";
-      infoMessage.textContent = "Aucun champ 'record' détecté.";
+      infoMessage.textContent = "No 'record' field detected.";
       return;
     }
 
     let gradientData = fullJson.record.gradientData;
     if(!gradientData) {
-      infoMessage.textContent = "Pas de 'gradientData' dans le record.";
+      infoMessage.textContent = "No 'gradientData' in the record.";
       return;
     }
 
-    // On convertit en structure unique => window.structuredData
+    // Convert to a single structure => window.structuredData
     const isXml = gradientData.trim().startsWith("<root>");
     let dataObj = null;
 
     if(isXml) {
-      infoMessage.textContent = "Format détecté: XML → conversion en JSON structuré.";
+      infoMessage.textContent = "Detected format: XML → converting to structured JSON.";
       dataObj = parseXmlToObject(gradientData);
     } else {
-      infoMessage.textContent = "Format détecté: JSON → parse direct.";
+      infoMessage.textContent = "Detected format: JSON → direct parsing.";
       dataObj = parseJsonToObject(gradientData);
     }
 
     if(!dataObj) {
-      infoMessage.textContent = "Impossible de parser/convertir en structure JSON.";
+      infoMessage.textContent = "Unable to parse/convert into JSON structure.";
       return;
     }
 
-    // On stocke l'objet final
+    // Store the final object
     window.structuredData = dataObj;
 
-    // Afficher le gradient sur la page
+    // Display the gradient on the page
     visualizeGradient(dataObj, isXml ? "Gradient (XML→JSON)" : "Gradient (JSON)");
 
   } catch(err) {
-    infoMessage.textContent = "Erreur réseau/fetch: " + err;
+    infoMessage.textContent = "Network/fetch error: " + err;
   }
 });
 
 /**************************************************
- * 2) Bouton “Télécharger JSON structuré”
+ * 2) “Download structured JSON” button
  **************************************************/
 downloadBtn.addEventListener("click", () => {
   if(!window.structuredData) {
-    alert("Aucune data structurée disponible.");
+    alert("No structured data available.");
     return;
   }
-  // On sérialize en JSON
+  // Serialize to JSON
   const dataStr = JSON.stringify(window.structuredData, null, 2);
   const blob = new Blob([dataStr], { type: "application/json" });
   const blobUrl = URL.createObjectURL(blob);
@@ -102,7 +102,7 @@ downloadBtn.addEventListener("click", () => {
 
 /**************************************************
  * parseXmlToObject(xmlString)
- * => on parse le XML, on reconstruit un objet
+ * => we parse the XML, rebuild an object
  *    { colorSequence: [ {time, color}, ... ],
  *      propsColors: [ {name, color}, ...],
  *      firstColor: "...",
@@ -113,7 +113,7 @@ function parseXmlToObject(xmlString) {
   const dom = parser.parseFromString(xmlString, "application/xml");
   const errNode = dom.querySelector("parsererror");
   if(errNode) {
-    console.warn("Erreur parse XML:", errNode.textContent);
+    console.warn("Error parsing XML:", errNode.textContent);
     return null;
   }
 
@@ -147,16 +147,16 @@ function parseXmlToObject(xmlString) {
 
 /**************************************************
  * parseJsonToObject(jsonString)
- * => on parse le JSON. On s'attend à
+ * => we parse the JSON. We expect
  *    { colorSequence, propsColors, firstColor, lastColor }
- * => on normalise un minimum
+ * => we normalize a bit
  **************************************************/
 function parseJsonToObject(jsonString) {
   let obj;
   try {
     obj = JSON.parse(jsonString);
   } catch(err) {
-    console.warn("Erreur parse JSON:", err);
+    console.warn("Error parsing JSON:", err);
     return null;
   }
   if(!obj.colorSequence) obj.colorSequence = [];
@@ -164,8 +164,8 @@ function parseJsonToObject(jsonString) {
   if(!obj.firstColor)   obj.firstColor = null;
   if(!obj.lastColor)    obj.lastColor = null;
 
-  // Tri par time
-  obj.colorSequence.sort((a,b) => (a.time||0) - (b.time||0));
+  // Sort by time
+  obj.colorSequence.sort((a,b) => (a.time || 0) - (b.time || 0));
 
   return obj;
 }
@@ -173,12 +173,12 @@ function parseJsonToObject(jsonString) {
 /**************************************************
  * visualizeGradient(dataObj, label)
  * => dataObj = { colorSequence: [...], propsColors: [...], firstColor, lastColor }
- * => on construit un linear-gradient multi-stop
+ * => we build a multi-stop linear-gradient
  **************************************************/
 function visualizeGradient(dataObj, label) {
   const colorSeq = dataObj.colorSequence;
   if(!colorSeq || colorSeq.length === 0) {
-    visualContainer.innerHTML = "Pas de colorSequence à afficher.";
+    visualContainer.innerHTML = "No colorSequence to display.";
     return;
   }
 
