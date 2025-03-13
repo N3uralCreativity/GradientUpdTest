@@ -1,3 +1,4 @@
+d
 const retrieveBtn = document.getElementById("retrieveBtn");
 const binIdInput = document.getElementById("binIdInput");
 const resultSection = document.getElementById("resultSection");
