@@ -1,4 +1,4 @@
-alert("No structured data preloaded ! ");
+alert("This version of the site is still in dev.");
 const retrieveBtn = document.getElementById("retrieveBtn");
 const binIdInput = document.getElementById("binIdInput");
 const resultSection = document.getElementById("resultSection");
