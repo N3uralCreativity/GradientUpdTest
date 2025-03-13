@@ -1,3 +1,4 @@
+alert("No structured data preloaded ! ");
 const retrieveBtn = document.getElementById("retrieveBtn");
 const binIdInput = document.getElementById("binIdInput");
 const resultSection = document.getElementById("resultSection");
@@ -21,7 +22,7 @@ retrieveBtn.addEventListener("click", async () => {
 
   const binId = binIdInput.value.trim();
   if(!binId) {
-    infoMessage.textContent = "Please enter a Gradient ID.";
+    infoMessage.textContent = "Please, enter a Gradient ID.";
     return;
   }
 
@@ -82,7 +83,7 @@ retrieveBtn.addEventListener("click", async () => {
  **************************************************/
 downloadBtn.addEventListener("click", () => {
   if(!window.structuredData) {
-    alert("No structured data available.");
+    alert("No structured data available ! ");
     return;
   }
   // Serialize to JSON
@@ -170,16 +171,6 @@ function parseJsonToObject(jsonString) {
   return obj;
 }
 
-/**************************************************
- * visualizeGradient(dataObj, label)
- * => dataObj = { colorSequence: [...], propsColors: [...], firstColor, lastColor }
- * => we build a multi-stop linear-gradient
- **************************************************/
-/**************************************************
- * visualizeGradient(dataObj, label)
- * => dataObj = { colorSequence: [...], propsColors: [...], firstColor, lastColor }
- * => we build a multi-stop linear-gradient
- **************************************************/
 /**************************************************
  * visualizeGradient(dataObj, label)
  * => dataObj = { colorSequence: [...], propsColors: [...], firstColor, lastColor }
