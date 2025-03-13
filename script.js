@@ -175,6 +175,16 @@ function parseJsonToObject(jsonString) {
  * => dataObj = { colorSequence: [...], propsColors: [...], firstColor, lastColor }
  * => we build a multi-stop linear-gradient
  **************************************************/
+/**************************************************
+ * visualizeGradient(dataObj, label)
+ * => dataObj = { colorSequence: [...], propsColors: [...], firstColor, lastColor }
+ * => we build a multi-stop linear-gradient
+ **************************************************/
+/**************************************************
+ * visualizeGradient(dataObj, label)
+ * => dataObj = { colorSequence: [...], propsColors: [...], firstColor, lastColor }
+ * => we build a multi-stop linear-gradient
+ **************************************************/
 function visualizeGradient(dataObj, label) {
   const colorSeq = dataObj.colorSequence;
   if(!colorSeq || colorSeq.length === 0) {
