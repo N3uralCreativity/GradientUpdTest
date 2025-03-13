@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <title>Gradient Visualizer</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <header>
+    <h1>Gradient Visualizer</h1>
+  </header>
+
+  <main>
+    <section id="binSection">
+      <label for="binIdInput">Bin ID JSONbin&nbsp;:</label>
+      <input type="text" id="binIdInput" placeholder="Ex: 63daa..." />
+      <button id="retrieveBtn">Récupérer</button>
+    </section>
+
+    <section id="resultSection" class="hidden">
+      <div id="infoMessage"></div>
+      <!-- Conteneur où on affiche le(s) gradient(s) -->
+      <div id="visualContainer"></div>
+      <!-- Bouton pour télécharger la “version JSON structurée” -->
+      <button id="downloadBtn" class="hidden">Télécharger JSON structuré</button>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
