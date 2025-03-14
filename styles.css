@@ -121,6 +121,27 @@ h1 {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+/* On peut styliser le footer et son bouton un peu comme on veut */
+footer {
+  margin-top: 2rem;
+  padding: 1rem 2rem;
+  background: #f3f3f3;
+  text-align: center;
+}
+
+footer button {
+  background: #666;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 0.6rem 1.2rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+footer button:hover {
+  background: #555;
+}
+
 @keyframes fadeInUp {
   to {
     opacity: 1;
