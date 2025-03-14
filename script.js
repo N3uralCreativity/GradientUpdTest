@@ -208,3 +208,11 @@ function buildMultiStopGradient(kpArray) {
   });
   return `linear-gradient(to right, ${stops.join(", ")})`;
 }
+
+// On cible le bouton du footer
+const apiStatusBtn = document.getElementById("apiStatusBtn");
+apiStatusBtn.addEventListener("click", () => {
+  // Redirige l’utilisateur vers la page de statut
+  // Ici on ouvre dans un nouvel onglet
+  window.open("https://status.jsonbin.io/", "_blank");
+});
